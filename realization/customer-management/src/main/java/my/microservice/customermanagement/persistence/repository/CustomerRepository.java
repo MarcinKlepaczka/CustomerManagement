@@ -11,4 +11,6 @@ import my.microservice.customermanagement.persistence.entity.Customer;
  */
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
+	public Customer findCustomerByName(String name);
+
 }

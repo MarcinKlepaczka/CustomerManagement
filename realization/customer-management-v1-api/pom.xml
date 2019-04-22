@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>customer-management-v1-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0</version>
 	<name>customer-management-v1-api</name>
 	<description>Customer Management Microservice API</description>
     <packaging>jar</packaging>
