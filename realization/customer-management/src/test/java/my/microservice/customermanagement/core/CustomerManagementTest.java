@@ -1,7 +1,6 @@
 package my.microservice.customermanagement.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +20,7 @@ import my.microservice.customermanagement.types.CustomerTO;
 @RunWith(SpringRunner.class)
 @Import({CustomerManagementImpl.class, CustomerManagementMapper.class})
 /**
- * 
+ *
  * Test Class for @link CustomerManagement Bean
  *
  */

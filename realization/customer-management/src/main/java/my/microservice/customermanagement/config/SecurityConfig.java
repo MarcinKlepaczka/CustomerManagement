@@ -11,30 +11,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import my.microservice.customermanagement.constant.Roles;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	   @Autowired
-	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	        auth.inMemoryAuthentication()
-	          .withUser("admin").password(encoder().encode("admin"))
-	          .authorities("ROLE_USER");
-	    }
-
-	@Bean
-	public PasswordEncoder  encoder() {
-	    return new BCryptPasswordEncoder();
-	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
 	    .csrf().disable()
 	    .authorizeRequests()
-	    .antMatchers("/**").hasRole("USER")
+	    .antMatchers("/v2/api-docs").permitAll()
+	    .antMatchers("/api/*").hasRole(Roles.ADMIN.replace("ROLE_", ""))
 	    .and()
 	    .httpBasic();
+	}
+
+   @Autowired
+    public void setUsers(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+          .withUser("admin").password(encoder().encode("admin"))
+          .authorities(Roles.ADMIN);
+    }
+
+	@Bean
+	public PasswordEncoder  encoder() {
+	    return new BCryptPasswordEncoder();
 	}
 
 }

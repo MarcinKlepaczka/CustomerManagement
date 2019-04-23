@@ -11,12 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import my.microservice.customermanagement.core.util.CustomerManagementMapper;
+import my.microservice.customermanagement.exceptions.CustomerManagementException;
+import my.microservice.customermanagement.exceptions.CustomerNotFoundException;
 import my.microservice.customermanagement.persistence.entity.Address;
 import my.microservice.customermanagement.persistence.entity.Customer;
 import my.microservice.customermanagement.persistence.repository.CustomerRepository;
 import my.microservice.customermanagement.types.AddressTO;
 import my.microservice.customermanagement.types.CustomerTO;
 
+/**
+ *
+ *  Implementation of {@link CustomerManagement}
+ */
 @Component
 public class CustomerManagementImpl implements CustomerManagement {
 
@@ -45,7 +51,12 @@ public class CustomerManagementImpl implements CustomerManagement {
 	@Override
 	public CustomerTO addCustomer(CustomerTO newCustomer) {
 		Customer customer = mapper.mapCustomer(newCustomer);
-		customer = customerRepository.save(customer);
+		try {
+			customer = customerRepository.save(customer);
+		}
+		catch (Exception exception) {
+			throw new CustomerManagementException();
+		}
 		return mapper.mapCustomerTO(customer);
 	}
 
@@ -55,7 +66,7 @@ public class CustomerManagementImpl implements CustomerManagement {
 		Customer customer = customerRepository.findCustomerByName(customerName);
 
 		if (customer == null) {
-			throw new RuntimeException("Customer with that name does not exist!");
+			throw new CustomerNotFoundException();
 		}
 
 		Address newAddress = mapper.mapAddress(address);
@@ -64,7 +75,12 @@ public class CustomerManagementImpl implements CustomerManagement {
 		}
 		customer.getAddresses().add(newAddress);
 
-		customer = customerRepository.save(customer);
+		try {
+			customer = customerRepository.save(customer);
+		}
+		catch (Exception exception) {
+			throw new CustomerManagementException();
+		}
 		return mapper.mapCustomerTO(customer);
 
 	}

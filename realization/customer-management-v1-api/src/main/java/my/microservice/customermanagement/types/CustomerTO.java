@@ -22,7 +22,7 @@ public class CustomerTO {
     @Email(message = "Invalid e-mail address.")
 	private String email;
 
-    @ApiModelProperty(value = "Customer's phone number", required = false)
+    @ApiModelProperty(value = "Customer's phone number", required = false, allowableValues = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\\\s\\\\./0-9]*$")
     @Pattern(regexp="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message="Invalid phone number.")
     private String phone;
 
